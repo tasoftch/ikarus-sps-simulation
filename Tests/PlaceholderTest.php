@@ -21,6 +21,8 @@
  * SOFTWARE.
  */
 
+use Ikarus\SPS\Simulation\Render\DynValue\CallbackDynamicValueRender;
+use Ikarus\SPS\Simulation\Render\DynValue\StaticDynamicValueRender;
 use Ikarus\SPS\Simulation\Render\Placeholder\HTMLElementPlaceholder;
 use Ikarus\SPS\Simulation\Render\Placeholder\HTMLPlaceholder;
 use Ikarus\SPS\Simulation\Render\Placeholder\TextPlaceholder;
@@ -31,7 +33,7 @@ class PlaceholderTest extends TestCase
     public function testHTMLPlaceholder() {
         $p = new HTMLPlaceholder('tt');
 
-        $this->assertEmpty((string)$p);
+        $this->assertEquals("$(tt)", (string)$p);
 
         $p->replace("Test");
 
@@ -68,4 +70,36 @@ class PlaceholderTest extends TestCase
         $p->replace(['class' => 'cdn', 'value' => 'Thomas<']);
         $this->assertEquals("<span id=\"test\" class=\"cdn\">Thomas&lt;</span>", $p);
     }
+
+	public function testRenderingTemplate() {
+		$asked_values = [];
+		$dynValRender = new CallbackDynamicValueRender(function($name) use (&$asked_values) {
+			$asked_values[] = $name;
+			if($name == 'test')
+				return "89";
+			return "Hallo";
+		});
+
+		$p1 = new TextPlaceholder("test");
+		$p2 = new HTMLElementPlaceholder("div", 'hehe', ['class' => 'text-left']);
+
+		$this->assertEquals("Dies ist ein 89 mit <div class=\"text-left\" id=\"hehe\">Hallo</div>", "Dies ist ein $p1 mit $p2");
+
+		$this->assertEquals([
+			'test',
+			'hehe'
+		], $asked_values);
+	}
+
+	public function testStaticTemplateRender() {
+		$r = new StaticDynamicValueRender();
+		$r->setValue('test', 'Thomas');
+		$r->setValue('hello', function() { return 86; });
+
+		$p1 = new TextPlaceholder("test");
+		$p2 = new TextPlaceholder('hello');
+		$p3 = new TextPlaceholder('unknown');
+
+		$this->assertEquals("Hier ist Thomas mit 86 und .", "Hier ist $p1 mit $p2 und $p3.");
+	}
 }

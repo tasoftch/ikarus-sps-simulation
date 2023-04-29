@@ -26,15 +26,19 @@ namespace Ikarus\SPS\Simulation\Render\Placeholder;
 
 class HTMLPlaceholder extends AbstractPlaceholder
 {
-    protected $value;
+    protected $value = '';
+	protected $replaced = false;
 
     public function replace($value)
     {
         $this->value = $value;
+		$this->replaced = true;
     }
 
     public function toString(): string
     {
-        return (string) $this->value;
+		if($this->replaced)
+        	return (string) $this->value;
+		return "$($this->name)";
     }
 }

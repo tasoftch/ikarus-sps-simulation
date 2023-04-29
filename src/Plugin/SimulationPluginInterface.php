@@ -25,33 +25,26 @@ namespace Ikarus\SPS\Simulation\Plugin;
 
 
 use Ikarus\SPS\Simulation\Environment\EnvironmentInterface;
+use Ikarus\SPS\Simulation\Render\SimulationRenderInterface;
 
 interface SimulationPluginInterface
 {
     /**
-     * Only plugins that implement this interface can be launched in the Ikarus SPS simulator.
-     * Asking the plugin's class by passing an upset environment lets the decision up to the plugin's class.
-     * If this method returns false, the simulation is cancelled.
-     * Otherwise the simulation Ikarus SPS instance gets prepared to run
+     * Before any simulation starts, the plugin's description gets asked if it will enable the simulation under a
+	 * given environment.
+	 * Normally, the plugin description MUST set a simulation render to the environment.
      *
      * @param EnvironmentInterface $environment
      * @return bool
+	 * @see EnvironmentInterface::setSimulationRender()
+	 * @see SimulationRenderInterface
      */
-    public static function isEnvironmentValid(EnvironmentInterface $environment): bool;
-
-    /**
-     * After the simulation Ikarus SPS engine has started, the plugin gets notified by passing the environment
-     * before to it to designate, that the current run loop is in simulation mode.
-     *
-     * @param EnvironmentInterface $environment
-     * @return void
-     */
-    public function enableSimulation(EnvironmentInterface $environment);
+    public function enableSimulation(EnvironmentInterface $environment): bool;
 
     /**
      * @param string $name
      * @param $value
      * @return bool
      */
-    public function setArgument(string $name, $value): bool;
+    public function changeArgument(string $name, $value): bool;
 }

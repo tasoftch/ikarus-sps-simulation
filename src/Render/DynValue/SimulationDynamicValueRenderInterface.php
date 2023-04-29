@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-namespace Ikarus\SPS\Simulation\Render;
+namespace Ikarus\SPS\Simulation\Render\DynValue;
 
 
 interface SimulationDynamicValueRenderInterface

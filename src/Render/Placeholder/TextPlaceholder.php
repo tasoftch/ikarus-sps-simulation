@@ -28,6 +28,6 @@ class TextPlaceholder extends HTMLPlaceholder
 {
     public function toString(): string
     {
-        return htmlspecialchars($this->value);
+        return htmlspecialchars($this->value ?: "");
     }
 }

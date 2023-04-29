@@ -65,6 +65,7 @@ class HTMLElementPlaceholder extends TextPlaceholder
 
     public function toString(): string
     {
+		$value = '';
         $attr = $this->applyAttributes($value);
         $attr = join(" ", $attr);
         return "<$this->tag $attr>" . htmlspecialchars($value) . "</$this->tag>";

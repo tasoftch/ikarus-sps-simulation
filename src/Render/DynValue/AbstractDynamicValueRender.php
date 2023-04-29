@@ -21,20 +21,33 @@
  * SOFTWARE.
  */
 
-namespace Ikarus\SPS\Simulation\Render;
+namespace Ikarus\SPS\Simulation\Render\DynValue;
 
 
-use Skyline\Render\Template\TemplateInterface;
+use Ikarus\SPS\Simulation\Render\Placeholder\AbstractPlaceholder;
 
-class ClassicTableRender implements SimulationRenderInterface
+abstract class AbstractDynamicValueRender implements SimulationDynamicValueRenderInterface
 {
-    public function getTemplate()
+    private static $current_render;
+
+    /**
+     * AbstractDynamicValueRender constructor.
+     */
+    public function __construct()
     {
-        // TODO: Implement getTemplate() method.
+        self::$current_render = $this;
     }
 
-    public function getDynamicValueRender(): ?SimulationDynamicValueRenderInterface
+    /**
+     * @return static|null
+     */
+    public static function getCurrentRender()
     {
-        // TODO: Implement getDynamicValueRender() method.
+        return self::$current_render;
+    }
+
+    public function invokeReplacementForPlaceholder(AbstractPlaceholder $placeholder) {
+        $value = $this->getValue( $placeholder->getName() );
+        $placeholder->replace( $value );
     }
 }

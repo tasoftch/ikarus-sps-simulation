@@ -24,6 +24,7 @@
 namespace Ikarus\SPS\Simulation\Render;
 
 
+use Ikarus\SPS\Simulation\Render\DynValue\SimulationDynamicValueRenderInterface;
 use Skyline\Render\Template\TemplateInterface;
 
 interface SimulationRenderInterface

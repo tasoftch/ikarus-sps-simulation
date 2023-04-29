@@ -24,7 +24,7 @@
 namespace Ikarus\SPS\Simulation\Render\Placeholder;
 
 
-use Ikarus\SPS\Simulation\Render\AbstractDynamicValueRender;
+use Ikarus\SPS\Simulation\Render\DynValue\AbstractDynamicValueRender;
 
 abstract class AbstractPlaceholder implements PlaceholderInterface
 {

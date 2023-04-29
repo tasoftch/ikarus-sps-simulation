@@ -21,33 +21,36 @@
  * SOFTWARE.
  */
 
-namespace Ikarus\SPS\Simulation\Render;
+namespace Ikarus\SPS\Simulation\Render\DynValue;
 
 
-use Ikarus\SPS\Simulation\Render\Placeholder\AbstractPlaceholder;
-
-abstract class AbstractDynamicValueRender implements SimulationDynamicValueRenderInterface
+class CallbackDynamicValueRender extends AbstractDynamicValueRender
 {
-    private static $current_render;
+    /** @var callable */
+    private $callback;
 
     /**
-     * AbstractDynamicValueRender constructor.
+     * CallbackDynamicValueRender constructor.
+     * @param callable $callback
      */
-    public function __construct()
+    public function __construct(callable $callback)
     {
-        self::$current_render = $this;
+        parent::__construct();
+        $this->callback = $callback;
     }
 
     /**
-     * @return static|null
+     * @inheritDoc
      */
-    public static function getCurrentRender()
+    public function getValue(string $name)
     {
-        return self::$current_render;
+        return ($this->callback)($name);
     }
 
-    public function invokeReplacementForPlaceholder(AbstractPlaceholder $placeholder) {
-        $value = $this->getValue( $placeholder->getName() );
-        $placeholder->replace( $value );
+    /**
+     * @inheritDoc
+     */
+    public function setValue(string $name, $value)
+    {
     }
 }
