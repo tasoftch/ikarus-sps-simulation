@@ -19,12 +19,10 @@ interface PluginSimulationDescriptionInterface
 	public function prepareSimulation(EnvironmentInterface $environment): bool;
 
 	/**
-	 * Returns which arguments from the environment are not changeable during simulation.
-	 * If this method returns NULL, all access pins are locked by default.
-	 * If the real plugin's changeArgument returns false on setting an unlocked argument, the simulation will crash.
+	 * Returns all argument names that are changeable during the simulation
 	 *
 	 * @return array|null
 	 * @see SimulationPluginInterface::changeArgument()
 	 */
-	public function getLockedArguments(): ?array;
+	public function getChangeableArgumentNames(): ?array;
 }
