@@ -9,8 +9,8 @@ class DefaultEnvironment implements EnvironmentInterface
 	/** @var SimulationRenderInterface */
 	private $simulation_render;
 
-	private $constructor_arguments = [];
-	private $values = [];
+	protected $constructor_arguments = [];
+	protected $values = [];
 
 	/**
 	 * @inheritDoc
