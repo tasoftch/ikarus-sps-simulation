@@ -25,6 +25,7 @@ namespace Ikarus\SPS\Simulation\Render;
 
 
 use Ikarus\SPS\Simulation\Render\DynValue\SimulationDynamicValueRenderInterface;
+use Ikarus\SPS\Simulation\Render\DynValue\StaticDynamicValueRender;
 
 class LegacyTableRender extends AbstractSimulationRender
 {
@@ -32,7 +33,12 @@ class LegacyTableRender extends AbstractSimulationRender
 	private $rows = [];
 	private $rowIndex = -1;
 
-    public function getTemplate()
+    public function __construct()
+	{
+        $this->dynamicValueRender = new StaticDynamicValueRender();
+	}
+
+	public function getTemplate()
     {
         return function() {
 			?>
@@ -47,11 +53,38 @@ class LegacyTableRender extends AbstractSimulationRender
 				</thead>
 				<tbody id="kontakte">
                 <?php
+                $id_c = 1;
                 foreach($this->rows as $cells) {
                     echo "<tr>";
                     foreach($cells as $cell) {
+                        $anID = "f" . ($id_c++);
                         list($value, $dynID, $class, $dynClass) = $cell;
 
+                        $attr = [];
+                        if($dynID) {
+							$attr["id"] = $anID;
+                            $this->dynamicValueRender->setValue("$anID.value", $dynID);
+						}
+
+                        if($class)
+                            $attr["class"][] = $class;
+
+                        if($dynClass) {
+							$this->dynamicValueRender->setValue("$anID.class", $dynClass);
+                        }
+
+                        echo "<td";
+                        if($attr['class'])
+                            $attr["class"] = join(" ", $attr["class"]);
+
+                        if($attr) {
+                            foreach($attr as $key => &$val)
+								$val = sprintf("%s=\"%s\"", htmlspecialchars($key), htmlspecialchars($val));
+							echo " ", join(" ", $attr);
+						}
+                        echo ">";
+                        echo ($value);
+                        echo "</td>";
                     }
                     echo "</tr>";
                 }

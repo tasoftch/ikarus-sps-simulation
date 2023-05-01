@@ -2,7 +2,7 @@
 
 namespace Ikarus\SPS\Simulation\Render\DynValue;
 
-class StaticDynamicValueRender extends AbstractDynamicValueRender
+class StaticDynamicValueRender extends AbstractDynamicValueRender implements LinkableValueRenderInterface
 {
 	protected $values = [];
 
@@ -24,5 +24,13 @@ class StaticDynamicValueRender extends AbstractDynamicValueRender
 	public function setValue(string $name, $value)
 	{
 		$this->values[$name] = $value;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getValues(): array
+	{
+		return $this->values;
 	}
 }
