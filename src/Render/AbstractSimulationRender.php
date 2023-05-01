@@ -33,6 +33,7 @@ abstract class AbstractSimulationRender implements SimulationRenderInterface
 
 	public function addValueMap(ValueMapInterface $map) {
 		$this->valueMap[ $map->getName() ] = $map;
+		return $this;
 	}
 
 	public function mapValue($value, $desired = NULL) {
