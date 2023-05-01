@@ -2,6 +2,7 @@
 
 namespace Ikarus\SPS\Simulation\Plugin\Description;
 
+use Ikarus\SPS\Register\MemoryRegisterInterface;
 use Ikarus\SPS\Simulation\Environment\EnvironmentInterface;
 use Ikarus\SPS\Simulation\Plugin\SimulationPluginInterface;
 
@@ -25,4 +26,14 @@ interface PluginSimulationDescriptionInterface
 	 * @see SimulationPluginInterface::changeArgument()
 	 */
 	public function getChangeableArgumentNames(): ?array;
+
+	/**
+	 * This method is called while simulation from the Ikarus SPS engine.
+	 *
+	 * It should map the requests from the simulation into the memory register to let the plugin act of it.
+	 *
+	 * @param $data
+	 * @param MemoryRegisterInterface $memoryRegister
+	 */
+	public function mapRequest($data, MemoryRegisterInterface $memoryRegister);
 }
